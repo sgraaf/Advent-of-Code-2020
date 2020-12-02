@@ -16,10 +16,10 @@ with open('input.txt', 'r') as f:
 
 # part one
 print('--- Part One ---')
-num_valid_passwords_1 = sum([1 for low, high, letter, password in l if low <= len(re.findall(letter, password)) <= high])
+num_valid_passwords_1 = sum([low <= len(re.findall(letter, password)) <= high for low, high, letter, password in l])
 print(f'Number of valid passwords: {num_valid_passwords_1}')
 
 # part two
 print('--- Part Two ---')
-num_valid_passwords_2 = sum([1 for low, high, letter, password in l if (password[low-1] == letter) ^ (password[high-1] == letter)])  # uses bitwise XOR
+num_valid_passwords_2 = sum([(password[low-1] == letter) ^ (password[high-1] == letter) for low, high, letter, password in l])  # uses bitwise XOR
 print(f'Number of valid passwords: {num_valid_passwords_2}')
