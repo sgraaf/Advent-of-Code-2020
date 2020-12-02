@@ -1,13 +1,13 @@
 #!/usr/bin/env python
 # coding: utf-8
-from itertools import product
+from itertools import combinations
 
 # read the input data from `input.txt` into a list `l`
 l = list(map(int, open('input.txt', 'r').readlines()))
 
 # part one
 print('--- Part One ---')
-for i, j in product(l, l):
+for i, j in combinations(l, 2):
     if i + j == 2020:
         print(f'{i} + {j} = 2020')
         print(f'{i} * {j} = {i * j}')
@@ -17,7 +17,7 @@ else:  # early stopping condition not reached
 
 # part two
 print('--- Part Two ---')
-for i, j, k in product(l, l, l):
+for i, j, k in combinations(l, 3):
     if i + j + k == 2020:
         print(f'{i} + {j} + {k} = 2020')
         print(f'{i} * {j} * {k} = {i * j * k}')
