@@ -3,7 +3,7 @@
 from functools import reduce
 from itertools import count
 from operator import mul
-from typing import List, Tuple
+from typing import Tuple
 
 print('--- Day 3: Toboggan Trajectory ---')
 
