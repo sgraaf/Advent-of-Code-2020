@@ -1,8 +1,10 @@
-# Advent of Code 2020
+# 🎄 Advent of Code 2020 🌟
 
-My solutions for [Advent of Code 2020](https://adventofcode.com/2020/) in Python 🐍.
+![Advent of Code Header Screenshot](./img/header.png)
 
-The solution to each day's puzzle (along with any data) is stored in its own directory:
+This repo contains my solutions for [Advent of Code 2020](https://adventofcode.com/2020/) in Python 🐍 using only the standard library. My solutions might not have the lowest possible computational complexity, but they should all feature good, clean Pythonic code.
+
+The solution to each day's puzzle (along with any input) is stored in its own directory:
 * [Day 1: Report Repair](./day01)
 * [Day 2: Password Philosophy](./day02)
 * [Day 3: Toboggan Trajectory](./day03)
