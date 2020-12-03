@@ -2,6 +2,8 @@
 # coding: utf-8
 from itertools import combinations
 
+print('--- Day 1: Report Repair ---')
+
 # read the input data from `input.txt` into a list `l`
 l = list(map(int, open('input.txt', 'r').readlines()))
 

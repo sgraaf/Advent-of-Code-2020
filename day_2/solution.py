@@ -2,6 +2,8 @@
 # coding: utf-8
 import re
 
+print('--- Day 2: Password Philosophy ---')
+
 # read the input data from `input.txt` into a list `l`
 l = []
 with open('input.txt', 'r') as f:
