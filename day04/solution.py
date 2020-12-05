@@ -17,7 +17,7 @@ REQUIRED_FIELDS = (
     'cid',  # Country ID
 )
 
-# read the input data from `input.txt` into a list `passports_strs`
+# read the input data from `input.txt` into a list `passports`
 passports = []
 with open('input.txt', 'r') as f:
     passport = {}  # initialize an empty passport dict
