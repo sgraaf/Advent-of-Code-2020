@@ -13,16 +13,16 @@ with open('input.txt', 'r') as f:
             answers.append(answer)
             answer = []  # reset the answer set
         else:
-            answer.append(line)
+            answer.append(set(line))
     else:  # final answer
         answers.append(answer)
 
 # part one
 print('--- Part One ---') 
-sum_answer_count_1 = sum([len(set(letter for answer_part in answer for letter in answer_part)) for answer in answers])
+sum_answer_count_1 = sum([len(set.union(*answer)) for answer in answers])
 print(f'The sum of the answer counts is: {sum_answer_count_1}')
 
 # part two
 print('--- Part Two ---')
-sum_answer_count_2 = sum([len(set.intersection(*map(set, answer))) for answer in answers])
+sum_answer_count_2 = sum([len(set.intersection(*answer)) for answer in answers])
 print(f'The sum of the answer counts is: {sum_answer_count_2}')
