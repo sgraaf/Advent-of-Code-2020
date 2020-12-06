@@ -10,3 +10,4 @@ The solution to each day's puzzle (along with any input) is stored in its own di
 * [Day 3: Toboggan Trajectory](./day03)
 * [Day 4: Passport Processing](./day04)
 * [Day 5: Binary Boarding](./day05)
+* [Day 6: Custom Customs](./day06)
