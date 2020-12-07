@@ -11,3 +11,4 @@ The solution to each day's puzzle (along with any input) is stored in its own di
 * [Day 4: Passport Processing](./day04)
 * [Day 5: Binary Boarding](./day05)
 * [Day 6: Custom Customs](./day06)
+* [Day 7: Handy Haversacks](./day07)
