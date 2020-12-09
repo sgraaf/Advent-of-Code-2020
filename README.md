@@ -13,3 +13,4 @@ The solution to each day's puzzle (along with any input) is stored in its own di
 * [Day 6: Custom Customs](./day06)
 * [Day 7: Handy Haversacks](./day07)
 * [Day 8: Handheld Halting](./day08)
+* [Day 9: Encoding Error](./day09)
