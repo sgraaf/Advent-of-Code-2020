@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # coding: utf-8
+from typing import Tuple
 import re
 
 print('--- Day 12: Rain Risk ---')
@@ -17,9 +18,8 @@ DIRECTIONS = [*DIRECTION_MAP]
 # read the input data from `input.txt` into a list `navigation_instructions`
 navigation_instructions = []
 with open('input.txt', 'r') as f:
-# with open('input_short.txt', 'r') as f:
     for line in f:
-        action, value = re.match(r'([NSEWLRF])(\d+)', line).groups()
+        action, value = re.match(r'([NESWLRF])(\d+)', line).groups()
         navigation_instructions.append((action, int(value)))
 
 # part one
@@ -46,7 +46,7 @@ print(f'The Manhattan distance between the end location and the ship\'s starting
 # part two
 print('--- Part Two ---')
 # (re-)define a function to perform rotations
-def rotate2(x, y, degree):
+def rotate2(x: int, y: int, degree: int) -> Tuple[int, int]:
     degree = (degree + 360) % 360
     if degree in {0, 360}:
         return x, y
