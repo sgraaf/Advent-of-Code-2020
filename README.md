@@ -19,3 +19,4 @@ The solution to each day's puzzle (along with any input) is stored in its own di
 * [Day 12: Rain Risk](./day12)
 * [Day 13: Shuttle Search](./day13)
 * [Day 14: Docking Data](./day14)
+* [Day 15: Rambunctious Recitation](./day15)
