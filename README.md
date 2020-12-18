@@ -22,3 +22,4 @@ The solution to each day's puzzle (along with any input) is stored in its own di
 * [Day 15: Rambunctious Recitation](./day15)
 * [Day 16: Ticket Translation](./day16)
 * [Day 17: Conway Cubes](./day17)
+* [Day 18: Operation Order](./day18)
