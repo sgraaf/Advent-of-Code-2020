@@ -24,3 +24,4 @@ The solution to each day's puzzle (along with any input) is stored in its own di
 * [Day 17: Conway Cubes](./day17)
 * [Day 18: Operation Order](./day18)
 * [Day 19: Monster Messages](./day19)
+* [Day 21: Allergen Assessment](./day21)
