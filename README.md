@@ -29,3 +29,4 @@ The solution to each day's puzzle (along with any input) is stored in its own di
 * [Day 22: Crab Combat](./day22)
 * [Day 23: Crab Cups](./day23)
 * [Day 24: Lobby Layout](./day24)
+* [Day 25: Combo Breaker](./day25)
