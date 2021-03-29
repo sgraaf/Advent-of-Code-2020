@@ -2,7 +2,7 @@
 # coding: utf-8
 import re
 from collections import defaultdict
-from typing import List, Tuple
+from typing import List, Optional, Tuple
 from operator import mul
 from functools import reduce
 from itertools import product
@@ -46,7 +46,10 @@ def get_borders(tile: List[str]) -> List[str]:
     return borders
 
 def find_neighbors(x: int, y: int) -> List[Tuple[int, int]]:
-    return [(x + i, y + j) for i in (-1, 0, 1) for j in (-1, 0, 1) if not (i == j == 0)]
+    return [(x + i, y + j) for i in (-1, 0) for j in (-1, 0) if x + i >= 0 and y + j >= 0 and bool(i) ^ bool(j)]
+
+def count_hashtag(tile: List[str]):
+    return sum(row.count('#') for row in tile)
     
 
 # part one
@@ -75,6 +78,14 @@ print(f'The multiplication of the IDs of the four corner tiles is: {reduce(mul, 
 
 # part two
 print('--- Part Two ---')
+SEAMONSTER_PATTERN = [
+    '                  # ',
+    '#    ##    ##    ###',
+    ' #  #  #  #  #  #   '
+]
+PATTERN_HEIGHT = len(SEAMONSTER_PATTERN)
+PATTERN_WIDTH = len(SEAMONSTER_PATTERN[0])
+
 # get the IDs of the edge and center tiles
 edges = [ID for ID, IDs in ID_to_IDs.items() if len(IDs) == 3]
 center = [ID for ID, IDs in ID_to_IDs.items() if len(IDs) > 3]
@@ -82,41 +93,77 @@ center = [ID for ID, IDs in ID_to_IDs.items() if len(IDs) > 3]
 height = width = int(len(ID_to_tile) ** 0.5)
 
 loc_to_ID = {}
+ID_to_loc = {}
 loc_to_tile = {}
+
+# place the first corner tile
+row, col = 0, 0
+ID = corners[0]
+orientations = get_orientations(ID_to_tile[ID])
+neighbor_IDs = ID_to_IDs[ID]
+shared_borders = set.union(*[IDs_to_border[(ID, neigbor_ID)] for neigbor_ID in neighbor_IDs])
+for orientation in orientations:
+    if right_border(orientation) in shared_borders and bottom_border(orientation) in shared_borders:  # orientation match
+        loc_to_ID[(row, col)] = ID
+        ID_to_loc[ID] = (row, col)
+        loc_to_tile[(row, col)] = orientation
+        break
+
+# place the remaining tiles
 for row, col in product(range(height), range(width)):
-    if (row, col) == (0, 0):  # place the corner tile
-        ID = corners[0]
-        tile = ID_to_tile[ID]
-        orientations = get_orientations(tile)
-        neighbor_IDs = ID_to_IDs[ID]
-        shared_borders = set.union(*[IDs_to_border[(ID, neigbor_ID)] for neigbor_ID in neighbor_IDs])
+    if (row, col) == (0, 0):  # skip the first corner tile
+        continue
+    # get the neighbors
+    neighbor_locs = find_neighbors(row, col)
+    neighbor_tiles = [loc_to_tile[loc] for loc in neighbor_locs]
+    # get the candidate IDs
+    cancidate_IDs = set.union(*[ID_to_IDs[loc_to_ID[loc]] for loc in neighbor_locs]) - set(ID_to_loc.keys())
+    for ID in cancidate_IDs:
+        orientations = get_orientations(ID_to_tile[ID])
         for orientation in orientations:
-            if right_border(orientation) in shared_borders and bottom_border(orientation) in shared_borders:  # correct orientation
+            for loc, tile in zip(neighbor_locs, neighbor_tiles):
+                if loc[0] == row:  # left neighbor
+                    if not right_border(tile) == left_border(orientation):
+                        break
+                else:  # top neighbor
+                    if not bottom_border(tile) == top_border(orientation):
+                        break
+            else:  # orientation match
                 loc_to_ID[(row, col)] = ID
+                ID_to_loc[ID] = (row, col)
                 loc_to_tile[(row, col)] = orientation
                 break
-        continue
-    
-    if row in {0, height - 1} and col in {0, width - 1}:  # corner
-        for ID in corners:
-            if ID not in loc_to_ID.values():
-                neighbor_locs = [neighbor_loc for neighbor_loc in find_neighbors(row, col) if neighbor_loc in loc_to_ID]
-                neighbor_IDs = [loc_to_ID[neighbor_loc] for neighbor_loc in neighbor_locs]
-    elif row in {0, height - 1}:  # top / bottom edge
-        for ID in edges:
-            if ID not in loc_to_ID.values():
-                pass
-    elif col in {0, width - 1}:  # left / right edge
-        for ID in edges:
-            if ID not in loc_to_ID.values():
-                pass
-    else:  # center tile
-        for ID in center:
-            if ID not in loc_to_ID.values():
-                pass
-    for ID, tile in ID_to_tile.items():
-        if ID not in loc_to_ID.values():
-            if I
-            if row in {0, height - 1}:  # top / bottom edge
+        else:
+            continue
+        break
 
-            elif
+# remove the borders
+for loc, tile in loc_to_tile.items():
+    loc_to_tile[loc] = [row[1:-1] for row in tile[1:-1]]
+
+# stitch the tiles together into a single image
+image = []
+for row in range(height):
+    for _row in range(len(loc_to_tile[row, 0])):
+        image.append(''.join([loc_to_tile[row, col][_row] for col in range(width)]))
+
+# try all orientations of the image to find the seamonsters
+image_orientations = get_orientations(image)
+for image_orientation in image_orientations:
+    seamonster_count = 0
+    for i in range(len(image_orientation) - PATTERN_HEIGHT + 1):
+        for j in range(len(image_orientation[i]) - PATTERN_WIDTH + 1):
+            for x in range(PATTERN_WIDTH):
+                for y in range(PATTERN_HEIGHT):
+                    if SEAMONSTER_PATTERN[y][x] == '#':
+                        if not image_orientation[i + y][j + x] == '#':
+                            break
+                else:
+                    continue
+                break
+            else:
+                seamonster_count += 1
+    if seamonster_count > 0:
+        break
+
+print(f'The number of # that are not part of a sea monster is: {count_hashtag(image_orientation) - seamonster_count * count_hashtag(SEAMONSTER_PATTERN)}')
