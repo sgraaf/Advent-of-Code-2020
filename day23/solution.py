@@ -1,49 +1,73 @@
 #!/usr/bin/env python
 # coding: utf-8
 from copy import deepcopy
-from typing import List, Optional
+from typing import Dict, List, Optional
+from tqdm import trange, tqdm
 
 print('--- Day 23: Crab Cups ---')
 
-# read the input data from `input.txt` into two lists `player_1_cards` and `player_2_cards`
+# read the input data from `input.txt` into a list `cups`
 cups = [6, 5, 3, 4, 2, 7, 9, 1, 8]
 _cups = deepcopy(cups)
-# cups = [3, 8, 9, 1, 2, 5, 4, 6, 7]
+
+class Node:
+    def __init__(self, val: int) -> None:
+        self.val = val
+        self.next = None
+
+def move_cups(cups: List[int], N: Optional[int] = 100) -> Dict[int, Node]:
+    min_cups = min(cups)
+    max_cups = max(cups)
+    nodes = {cup: Node(cup) for cup in cups}
+
+    for cup, next_cup in zip(cups, cups[1:] + cups[:1]):
+        nodes[cup].next = nodes[next_cup]
+
+    current_node = nodes[cups[0]]
+    # simulate N moves
+    for _ in trange(N):
+        a = current_node.next
+        b = a.next
+        c = b.next
+
+        destination_cup = current_node.val - 1
+        while destination_cup in {a.val, b.val, c.val} or destination_cup < min_cups:
+            destination_cup -= 1
+            if destination_cup < min_cups:
+                destination_cup = max_cups
+        destination_node = nodes[destination_cup]
+
+        current_node.next = c.next
+        current_node = c.next
+        c.next = destination_node.next
+        destination_node.next = a
+
+    return nodes
 
 
 # part one
 print('--- Part One ---')
-# define a function to simulate a move of crab cups
-def move(cups: List[int], previous_cup: Optional[int] = None) -> List[int]:
-    # get the current cup
-    current_cup = cups[(cups.index(previous_cup) + 1) % len(cups)] if previous_cup else cups[0]
-    cc_idx = cups.index(current_cup)
-    # pick up the three cups clockwise from the current cup
-    cups_picked_up = [cups[idx % len(cups)] for idx in range(cc_idx+1, cc_idx+4)]
-    cups = [cup for cup in cups if cup not in cups_picked_up]
-    # get the destination cup
-    destination_cup = current_cup - 1
-    while destination_cup in cups_picked_up or destination_cup < min(cups):
-        destination_cup -= 1
-        if destination_cup < min(cups):
-            destination_cup = max(cups)
-    dc_idx = cups.index(destination_cup)
-    # place the picked up cups directly clockwise from the destination cup
-    cups = cups[:dc_idx+1] + cups_picked_up + cups[dc_idx+1:]
-    return current_cup, cups
 # simulate 100 moves    
-previous_cup = None
-for _ in range(100):
-    previous_cup, cups = move(cups, previous_cup)
-# get the labels on the cups after cup 1
-print(f'The labels on the cups after cup 1 are: {"".join(map(str, cups[cups.index(1)+1:] + cups[:cups.index(1)]))}')
+nodes = move_cups(cups, 100)
+
+# get the cups in the order destination_node moving
+cups_destination_node = []
+current_node = nodes[1]
+while len(cups_destination_node) < len(cups):
+    cups_destination_node.append(current_node.val)
+    current_node = current_node.next
+
+# get the labels on the cups destination_node cup 1
+print(f'The labels on the cups destination_node cup 1 are: {"".join(map(str, cups_destination_node[cups_destination_node.index(1)+1:] + cups_destination_node[:cups_destination_node.index(1)]))}')
 
 
 # part two
 print('--- Part Two ---')
-# extend our cups to 1M
-cups = _cups + list(range(max(cups) + 1, 1_000_000+1))
-# simulate 10M moves    
-previous_cup = None
-for _ in range(10_000_000):
-    previous_cup, cups = move(cups, previous_cup)
+# extend our `cups` list through 1M
+cups = _cups + list(range(max(_cups) + 1, 1_000_000 + 1))
+
+# simulate 10M moves  
+nodes = move_cups(cups, 10_000_000)
+
+# get the labels on the cups destination_node cup 1
+print(f'If you multiply the labels together of the two cups that end up immediately clockwise of cup 1, you get: {nodes[1].next.val * nodes[1].next.next.val}')

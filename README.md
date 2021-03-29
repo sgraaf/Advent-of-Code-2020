@@ -27,4 +27,5 @@ The solution to each day's puzzle (along with any input) is stored in its own di
 * [Day 20: Jurassic Jigsaw](./day20)
 * [Day 21: Allergen Assessment](./day21)
 * [Day 22: Crab Combat](./day22)
+* [Day 23: Crab Cups](./day23)
 * [Day 24: Lobby Layout](./day24)
